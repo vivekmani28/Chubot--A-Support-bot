@@ -1,0 +1,21 @@
+{
+  "name": "chubot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vivek Mani",
+  "license": "ISC",
+  "dependencies": {
+    "botkit": "^0.2.2",
+    "pg": "^6.1.0",
+    "parse-link-header": "^0.4.1",
+    "request": "^2.74.0"
+
+  },
+  "engines": {
+    "node": "5.10.1"
+  }
+}

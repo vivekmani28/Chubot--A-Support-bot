@@ -1,0 +1,25 @@
+- name: Install nodejs
+  apt: name=nodejs update_cache=yes state=present
+  become: yes
+- name: Install node
+  apt: name=node update_cache=yes state=present
+  become: yes
+- name: Install npm
+  apt: name=npm update_cache=yes state=present
+  become: yes
+- name: Install forever
+  npm: name=forever global=yes state=present
+  become: yes
+- name: Install n
+  npm: name=n global=yes state=present
+  become: yes
+- command: n stable
+  become: yes
+- name: Install git
+  apt: name=git update_cache=yes state=present
+  become: yes
+- name: Clone git repo
+  git: repo=git://github.com/gms298/chu.git dest=App clone=yes update=yes accept_hostkey=yes
+- name: Install npm packages
+  command: npm install chdir=App/
+  become: yes

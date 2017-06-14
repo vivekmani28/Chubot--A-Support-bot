@@ -1,0 +1,57 @@
+- name: Chubot - AWS EC2 Provisioning
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Install boto
+    sudo: yes
+    pip: name=boto
+
+  - include_vars: secret.yml
+
+  - name: Creating an ec2 instance
+    ec2:
+     aws_access_key: "{{awsaccesskey}}"
+     aws_secret_key: "{{awssecretkey}}"
+     key_name: "{{awskeyname}}"
+     instance_type: t2.micro
+     region: us-east-1
+     image: "{{awsimage}}"
+     wait: yes
+     group_id: "{{awsgroupid}}"
+     vpc_subnet_id: "{{awsvpcsubnetid}}"
+     assign_public_ip: yes
+     wait_timeout: 600
+     count: 1
+     instance_tags:
+      Name: "chubot"
+    register: ec2_instances
+
+  - name: Add ec2 instance as a host
+    add_host:
+     hostname: "{{ec2_instances.instances[0].public_ip}}"
+     groupname: chu_ec2
+     ansible_ssh_user: ubuntu
+     ansible_ssh_private_key_file: ./chubot.pem
+
+  - name: Waiting for port 22 to become available
+    wait_for:
+     host: "{{ec2_instances.instances[0].public_ip}}"
+     port: 22
+     state: started
+
+- name: Setup
+  hosts: chu_ec2
+  sudo: yes
+  tasks:
+  - include: setup.yml
+
+  - include_vars: secret.yml
+
+  - name: Run Chubot using Forever
+    shell: forever start bot.js
+    args:
+      chdir: App/
+    environment:
+      SLACK_TOKEN: "{{slack}}"
+      GIST_TOKEN: "{{gist}}"
+      DB_URL: "{{db}}"
