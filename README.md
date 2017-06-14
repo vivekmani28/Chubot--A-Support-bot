@@ -95,4 +95,4 @@ Lastly, there is one more area that could be addressed in the future and that is
 
 ### <a name="video"></a>Video Presentation
 
-[Here](https://https://www.youtube.com/watch?v=fkMhdPeGPh8) is a link to the video presentation, demonstrating the three usecases.
+[Here](https://www.youtube.com/watch?v=fkMhdPeGPh8) is a link to the video presentation, demonstrating the three usecases.
